@@ -139,25 +139,29 @@ class FacturaContainer extends HTMLElement {
             <h4>Información del Cliente</h4>
             <div class="row g-3">
               <div class="col-md-6">
+                <label for="id-factura" class="form-label">ID Factura</label>
+                <input type="text" id="id-factura" class="form-control" readonly>
+              </div> <br>
+              <div class="col-md-6">
                 <label for="no-id" class="form-label">No. ID</label>
                 <input type="text" id="no-id" class="form-control" placeholder="Número de Identificación">
-              </div>
+              </div> <br>
               <div class="col-md-6">
                 <label for="nombre" class="form-label">Nombres</label>
                 <input type="text" id="nombre" class="form-control" placeholder="Nombres">
-              </div>
+              </div><br>
               <div class="col-md-6">
                 <label for="apellido" class="form-label">Apellidos</label>
                 <input type="text" id="apellido" class="form-control" placeholder="Apellidos">
-              </div>
+              </div><br>
               <div class="col-md-6">
                 <label for="direccion" class="form-label">Dirección</label>
                 <input type="text" id="direccion" class="form-control" placeholder="Dirección">
-              </div>
+              </div><br>
               <div class="col-md-12">
                 <label for="email" class="form-label">Email</label>
                 <input type="email" id="email" class="form-control" placeholder="Correo Electrónico">
-              </div>
+              </div><br>
             </div>
           </div>
           <hr>
@@ -223,11 +227,17 @@ class FacturaContainer extends HTMLElement {
     ];
     this.agregarProducto = this.agregarProducto.bind(this);
     this.pagar = this.pagar.bind(this);
+    this.idFactura = this.generarIdFactura(); // Generamos el ID de la factura
   }
 
   connectedCallback() {
+    this.shadowRoot.querySelector('#id-factura').value = this.idFactura; // Mostramos el ID de la factura
     this.shadowRoot.querySelector('#agregar-producto').addEventListener('click', this.agregarProducto);
     this.shadowRoot.querySelector('#pagar').addEventListener('click', this.pagar);
+  }
+
+  generarIdFactura() {
+    return 'FAC-' + Math.floor(Math.random() * 1000000); // Genera un ID de factura aleatorio
   }
 
   agregarProducto() {
@@ -256,7 +266,7 @@ class FacturaContainer extends HTMLElement {
   }
 
   generarIdProducto() {
-    return Math.floor(Math.random() * 1000000); // Genera un número aleatorio para el ID
+    return Math.floor(Math.random() * 1000000); // Genera un número aleatorio para el ID del producto
   }
 
   actualizarTabla() {
