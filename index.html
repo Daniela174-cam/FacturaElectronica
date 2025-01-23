@@ -1,21 +1,170 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="js/sweetalert2/dist/sweetalert2.js" defer></script>
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css">
-    <script src="js/bootstrap/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="js/sweetalert2/dist/sweetalert2.css">
-    <script type="module" src="js/app.js" defer></script>
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Factura Interactiva</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body>
-    <button class="btn btn-primary">idiemd</button>
+<body class="bg-light">
+  <div class="container my-5">
+    <factura-container></factura-container>
+  </div>
+
+  <script>
+    class FacturaContainer extends HTMLElement {
+      constructor() {
+        super();
+        this.attachShadow({ mode: 'open' });
+        this.shadowRoot.innerHTML = /*html*/`
+          <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+          <div class="card shadow">
+            <div class="card-body">
+              <h1 class="card-title text-center">Factura</h1>
+              <div class="mb-4">
+                <h4>Información del Cliente</h4>
+                <div class="row g-3">
+                  <div class="col-md-6">
+                    <label for="no-id" class="form-label">No. ID</label>
+                    <input type="text" id="no-id" class="form-control" placeholder="Número de Identificación">
+                  </div>
+                  <div class="col-md-6">
+                    <label for="nombre" class="form-label">Nombres</label>
+                    <input type="text" id="nombre" class="form-control" placeholder="Nombres">
+                  </div>
+                  <div class="col-md-6">
+                    <label for="apellido" class="form-label">Apellidos</label>
+                    <input type="text" id="apellido" class="form-control" placeholder="Apellidos">
+                  </div>
+                  <div class="col-md-6">
+                    <label for="direccion" class="form-label">Dirección</label>
+                    <input type="text" id="direccion" class="form-control" placeholder="Dirección">
+                  </div>
+                  <div class="col-md-12">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" id="email" class="form-control" placeholder="Correo Electrónico">
+                  </div>
+                </div>
+              </div>
+              <hr>
+              <div class="mb-4">
+                <h4>Productos</h4>
+                <div class="row g-3">
+                  <div class="col-md-3">
+                    <label for="codigo-producto" class="form-label">Código Producto</label>
+                    <input type="text" id="codigo-producto" class="form-control" placeholder="Código">
+                  </div>
+                  <div class="col-md-3">
+                    <label for="nombre-producto" class="form-label">Nombre Producto</label>
+                    <input type="text" id="nombre-producto" class="form-control" placeholder="Nombre">
+                  </div>
+                  <div class="col-md-3">
+                    <label for="valor-unitario" class="form-label">Valor Unitario</label>
+                    <input type="number" id="valor-unitario" class="form-control" placeholder="Valor Unitario">
+                  </div>
+                  <div class="col-md-3">
+                    <label for="cantidad" class="form-label">Cantidad</label>
+                    <input type="number" id="cantidad" class="form-control" placeholder="Cantidad">
+                  </div>
+                </div>
+                <div class="d-grid mt-3">
+                  <button id="agregar-producto" class="btn btn-primary">Agregar Producto</button>
+                </div>
+              </div>
+              <hr>
+              <div class="mb-4">
+                <h4>Resumen de Compra</h4>
+                <div class="table-responsive">
+                  <table class="table table-striped">
+                    <thead>
+                      <tr>
+                        <th>Código</th>
+                        <th>Nombre</th>
+                        <th>Valor Unitario</th>
+                        <th>Cantidad</th>
+                        <th>Subtotal</th>
+                        <th>Acciones</th>
+                      </tr>
+                    </thead>
+                    <tbody id="productos-lista"></tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="mb-4 text-end">
+                <div class="fw-bold">Subtotal: $<span id="subtotal">0.00</span></div>
+                <div class="fw-bold">IVA (19%): $<span id="iva">0.00</span></div>
+                <div class="fw-bold">Total: $<span id="total">0.00</span></div>
+              </div>
+              <div class="d-grid">
+                <button class="btn btn-success btn-lg">Pagar</button>
+              </div>
+            </div>
+          </div>
+        `;
+
+        this.productos = [];
+        this.agregarProducto = this.agregarProducto.bind(this);
+      }
+
+      connectedCallback() {
+        this.shadowRoot.querySelector('#agregar-producto').addEventListener('click', this.agregarProducto);
+      }
+
+      agregarProducto() {
+        const codigo = this.shadowRoot.querySelector('#codigo-producto').value;
+        const nombre = this.shadowRoot.querySelector('#nombre-producto').value;
+        const valorUnitario = parseFloat(this.shadowRoot.querySelector('#valor-unitario').value);
+        const cantidad = parseInt(this.shadowRoot.querySelector('#cantidad').value);
+
+        if (codigo && nombre && valorUnitario > 0 && cantidad > 0) {
+          const subtotal = valorUnitario * cantidad;
+          this.productos.push({ codigo, nombre, valorUnitario, cantidad, subtotal });
+          this.actualizarTabla();
+          this.actualizarResumen();
+        } else {
+          alert('Por favor, llena todos los campos correctamente.');
+        }
+      }
+
+      actualizarTabla() {
+        const tbody = this.shadowRoot.querySelector('#productos-lista');
+        tbody.innerHTML = '';
+        this.productos.forEach((producto, index) => {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>${producto.codigo}</td>
+            <td>${producto.nombre}</td>
+            <td>$${producto.valorUnitario.toFixed(2)}</td>
+            <td>${producto.cantidad}</td>
+            <td>$${producto.subtotal.toFixed(2)}</td>
+            <td><button data-index="${index}" class="btn btn-sm btn-danger eliminar">Eliminar</button></td>
+          `;
+          row.querySelector('.eliminar').addEventListener('click', () => this.eliminarProducto(index));
+          tbody.appendChild(row);
+        });
+      }
+
+      actualizarResumen() {
+        const subtotal = this.productos.reduce((acc, p) => acc + p.subtotal, 0);
+        const iva = subtotal * 0.19;
+        const total = subtotal + iva;
+
+        this.shadowRoot.querySelector('#subtotal').textContent = subtotal.toFixed(2);
+        this.shadowRoot.querySelector('#iva').textContent = iva.toFixed(2);
+        this.shadowRoot.querySelector('#total').textContent = total.toFixed(2);
+      }
+
+      eliminarProducto(index) {
+        this.productos.splice(index, 1);
+        this.actualizarTabla();
+        this.actualizarResumen();
+      }
+    }
+
+    customElements.define('factura-container', FacturaContainer);
+  </script>
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
-<h1>datos cliente</h1>
-Numero Factura:<input type="text" id="nombre_cliente" placeholder="ingrese nombre del cliente"><br/><br/>
-Numero Id:<input type="text" id="id_cliente" placeholder="ingrese nombre del cliente"> <br> <br>
-Id: <input type="text" id="id_cliente" placeholder="ingrese nombre del cliente"><br><br>
