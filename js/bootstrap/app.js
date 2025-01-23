@@ -146,7 +146,8 @@ class FacturaContainer extends HTMLElement {
                 <label for="no-id" class="form-label">No. ID</label>
                 <input type="text" id="no-id" class="form-control" placeholder="Número de Identificación">
               </div> <br>
-              <div class="col-md-6">
+              <div class="col-md-6
+              ">
                 <label for="nombre" class="form-label">Nombres</label>
                 <input type="text" id="nombre" class="form-control" placeholder="Nombres">
               </div><br>
