@@ -9,7 +9,7 @@ class FacturaContainer extends HTMLElement {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background-color: rgb(255, 255, 255); /* Fondo rojo */
+  background-color: rgb(255, 243, 253); /* Fondo rojo */
   margin: 0;
 }
 .mainContainer {
@@ -120,7 +120,7 @@ class FacturaContainer extends HTMLElement {
 
     `;
 
-    this.productos = [];
+    this.productos = []; 
     this.productosOpciones = [
       { id: 1, nombre: 'Pizza', precio: 10.00 },
       { id: 2, nombre: 'Hamburguesa', precio: 5.00 },
@@ -129,11 +129,11 @@ class FacturaContainer extends HTMLElement {
     ];
     this.agregarProducto = this.agregarProducto.bind(this);
     this.pagar = this.pagar.bind(this);
-    this.idFactura = this.generarIdFactura(); 
+    this.idFactura = this.generarIdFactura();
   }
 
- connectedCallback() {
-    this.shadowRoot.querySelector('#id-factura').value = this.idFactura; 
+  connectedCallback() {
+    this.shadowRoot.querySelector('#id-factura').value = this.idFactura;
     this.shadowRoot.querySelector('#agregar-producto').addEventListener('click', this.agregarProducto);
     this.shadowRoot.querySelector('#pagar').addEventListener('click', this.pagar);
   }
@@ -143,22 +143,25 @@ class FacturaContainer extends HTMLElement {
   }
 
   agregarProducto() {
-    const productoSelect = this.shadowRoot.querySelector('#producto-select').value;
+    const productoSelect = parseInt(this.shadowRoot.querySelector('#producto-select').value);
     const cantidad = parseInt(this.shadowRoot.querySelector('#cantidad').value);
 
     if (productoSelect && cantidad > 0) {
-      const productoSeleccionado = this.productosOpciones.find(p => p.id == productoSelect);
-      const idProducto = this.generarIdProducto();
-      const subtotal = productoSeleccionado.precio * cantidad;
+      const productoSeleccionado = this.productosOpciones.find(p => p.id === productoSelect);
+      const productoExistente = this.productos.find(p => p.id === productoSelect);
 
-      this.productos.push({
-        id: idProducto,
-        codigo: idProducto,
-        nombre: productoSeleccionado.nombre,
-        valorUnitario: productoSeleccionado.precio,
-        cantidad: cantidad,
-        subtotal: subtotal
-      });
+      if (productoExistente) {
+        productoExistente.cantidad += cantidad;
+        productoExistente.subtotal = productoExistente.valorUnitario * productoExistente.cantidad;
+      } else {
+        this.productos.push({
+          id: productoSeleccionado.id,
+          nombre: productoSeleccionado.nombre,
+          valorUnitario: productoSeleccionado.precio,
+          cantidad: cantidad,
+          subtotal: productoSeleccionado.precio * cantidad
+        });
+      }
 
       this.actualizarTabla();
       this.actualizarResumen();
@@ -167,17 +170,13 @@ class FacturaContainer extends HTMLElement {
     }
   }
 
-  generarIdProducto() {
-    return Math.floor(Math.random() * 1000000); 
-  }
-
   actualizarTabla() {
     const tbody = this.shadowRoot.querySelector('#productos-lista');
     tbody.innerHTML = '';
     this.productos.forEach((producto, index) => {
       const row = document.createElement('tr');
       row.innerHTML = `
-        <td>${producto.codigo}</td>
+        <td>${producto.id}</td>
         <td>${producto.nombre}</td>
         <td>$${producto.valorUnitario.toFixed(2)}</td>
         <td>${producto.cantidad}</td>
@@ -207,9 +206,12 @@ class FacturaContainer extends HTMLElement {
 
   pagar() {
     const total = parseFloat(this.shadowRoot.querySelector('#total').textContent);
-
+  
     if (total > 0) {
-      alert(`¡Pago realizado exitosamente! Total: $${total.toFixed(2)}`);
+     
+      alert(`¡Gracias por tu compra! El total de tu factura es: $${total.toFixed(2)}`);
+  
+     
       this.productos = [];
       this.shadowRoot.querySelector('#producto-select').value = '';
       this.shadowRoot.querySelector('#cantidad').value = '';
@@ -221,6 +223,7 @@ class FacturaContainer extends HTMLElement {
       alert('No hay productos en la factura para pagar.');
     }
   }
+  
 }
 
 customElements.define('factura-container', FacturaContainer);
