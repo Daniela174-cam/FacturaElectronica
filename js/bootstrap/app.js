@@ -6,11 +6,13 @@ class FacturaContainer extends HTMLElement {
       <style>
         body {
           font-family: 'Arial', sans-serif;
-          background-color: #f4f4f9;
+        }
+          .bg-light{
+           background-color:rgb(247, 23, 23);
         }
 
         .card {
-          background-color: #ffffff;
+          background-color:rgb(255, 251, 251);
           border-radius: 12px;
           box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
           padding: 20px;
@@ -48,30 +50,30 @@ class FacturaContainer extends HTMLElement {
         }
 
         .btn-primary {
-          background-color: #3498db;
+          background-color:rgb(0, 19, 102);
           color: #fff;
         }
 
         .btn-primary:hover {
-          background-color: #2980b9;
+          background-color:rgb(87, 39, 151);
         }
 
         .btn-success {
-          background-color: #2ecc71;
+          background-color:rgb(0, 19, 102);
           color: #fff;
         }
 
         .btn-success:hover {
-          background-color: #27ae60;
+          background-color:rgb(156, 22, 218);
         }
 
         .btn-danger {
-          background-color: #e74c3c;
+          background-color:rgb(128, 105, 102);
           color: #fff;
         }
 
         .btn-danger:hover {
-          background-color: #c0392b;
+          background-color:rgb(233, 57, 38);
         }
 
         .table {
@@ -88,7 +90,7 @@ class FacturaContainer extends HTMLElement {
         }
 
         .table th {
-          background-color: #3498db;
+          background-color:rgb(0, 19, 102);
           color: #fff;
         }
 
@@ -117,8 +119,8 @@ class FacturaContainer extends HTMLElement {
         }
 
         .eliminar:hover {
-          background-color: #f44336;
-          border-color: #f44336;
+          background-color:rgb(244, 54, 111);
+          border-color:rgb(0, 0, 0);
         }
 
         h4 {
@@ -126,11 +128,9 @@ class FacturaContainer extends HTMLElement {
           font-size: 1.25rem;
           margin-bottom: 10px;
         }
-
         .container-fluid {
           padding: 30px;
         }
-
       </style>
       <div class="card shadow">
         <div class="card-body">
@@ -141,10 +141,6 @@ class FacturaContainer extends HTMLElement {
               <div class="col-md-6">
                 <label for="id-factura" class="form-label">ID Factura</label>
                 <input type="text" id="id-factura" class="form-control" readonly>
-              </div> <br>
-              <div class="col-md-6">
-                <label for="no-id" class="form-label">No. ID</label>
-                <input type="text" id="no-id" class="form-control" placeholder="Número de Identificación">
               </div> <br>
               <div class="col-md-6">
                 <label for="nombre" class="form-label">Nombres</label>
@@ -168,7 +164,7 @@ class FacturaContainer extends HTMLElement {
           <div class="mb-4">
             <h4>Productos</h4>
             <div class="row g-3">
-              <div class="col-md-6">
+              <div class="col-md-6"> 
                 <label for="producto-select" class="form-label">Seleccionar Producto</label>
                 <select id="producto-select" class="form-select">
                   <option value="" disabled selected>Elige un producto</option>
@@ -177,15 +173,15 @@ class FacturaContainer extends HTMLElement {
                   <option value="3">Ensalada - $7.00</option>
                   <option value="4">Tacos - $4.50</option>
                 </select>
-              </div>
+              </div><br>
               <div class="col-md-3">
                 <label for="cantidad" class="form-label">Cantidad</label>
                 <input type="number" id="cantidad" class="form-control" placeholder="Cantidad">
-              </div>
+              </div><br>
             </div>
             <div class="d-grid mt-3">
               <button id="agregar-producto" class="btn btn-primary">Agregar Producto</button>
-            </div>
+            </div><br>
           </div>
           <hr>
           <div class="mb-4">
@@ -205,12 +201,12 @@ class FacturaContainer extends HTMLElement {
                 <tbody id="productos-lista"></tbody>
               </table>
             </div>
-          </div>
+          </div><br>
           <div class="mb-4 text-end">
             <div class="fw-bold">Subtotal: $<span id="subtotal">0.00</span></div>
             <div class="fw-bold">IVA (19%): $<span id="iva">0.00</span></div>
             <div class="fw-bold">Total: $<span id="total">0.00</span></div>
-          </div>
+          </div><br>
           <div class="d-grid">
             <button id="pagar" class="btn btn-success btn-lg">Pagar</button>
           </div>
