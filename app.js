@@ -60,30 +60,30 @@ class FacturaContainer extends HTMLElement {
         .d-grid {
           display: grid;
         }
-              @media (max-width: 768px) {
-          .mainContainer {
-            max-width: 90%; /* Reducir ancho en dispositivos más pequeños */
-            padding: 15px;
-          }
-
-          .card-title {
-            font-size: 1.5rem; /* Reducir tamaño del título */
-          }
-
-          .form-label, .form-control, .form-select {
-            font-size: 0.9rem; /* Ajustar tamaños de texto */
-          }
-
-          .btn {
-            font-size: 0.9rem;
-            padding: 8px 15px; /* Reducir tamaño de botones */
-          }
-
-          .table th, .table td {
-            font-size: 0.8rem; /* Ajustar fuente en tablas */
-            padding: 8px; /* Reducir espacio entre celdas */
-          }
+        @media (max-width: 768px) {
+        .mainContainer {
+          max-width: 90%; /* Reducir ancho en dispositivos más pequeños */
+          padding: 15px;
         }
+
+        .card-title {
+          font-size: 1.5rem; /* Reducir tamaño del título */
+        }
+
+        .form-label, .form-control, .form-select {
+          font-size: 0.9rem; /* Ajustar tamaños de texto */
+        }
+
+        .btn {
+          font-size: 0.9rem;
+          padding: 8px 15px; /* Reducir tamaño de botones */
+        }
+
+        .table th, .table td {
+          font-size: 0.8rem; /* Ajustar fuente en tablas */
+          padding: 8px; /* Reducir espacio entre celdas */
+        }
+      }
 
         @media (max-width: 480px) {
           .card-title {
