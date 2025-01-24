@@ -3,55 +3,101 @@ class FacturaContainer extends HTMLElement {
     super();
     this.attachShadow({ mode: 'open' });
     this.shadowRoot.innerHTML = /*html*/`
-      <style>
-:host {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  background-color: rgb(255, 243, 253); /* Fondo rojo */
-  margin: 0;
-}
-.mainContainer {
-  max-width: 500px;
-  width: 100%;
-  background-color: beige;
-  padding: 20px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  border-radius: 12px;
-}
+        <style>
+          :host {
+          display: flex;
+          justify-content: center;
 
-    .card-title {
-      font-size: 2rem;
-      color: #2d3748;
-      text-align: center;
-    }
-    .form-label, .form-control, .form-select {
-      margin-bottom: 15px;
-    }
-    .btn {
-      font-size: 1rem;
-      padding: 10px 20px;
-      border-radius: 8px;
-      transition: background-color 0.3s;
-    }
-    .btn-primary:hover {
-      background-color: rgb(87, 39, 151);
-    }
-    .table th, .table td {
-      padding: 12px;
-      text-align: left;
-      border-bottom: 1px solid #ddd;
-    }
-    .fw-bold {
-      font-weight: 600;
-    }
-    .text-end {
-      text-align: right;
-    }
-    .d-grid {
-      display: grid;
-    }
+          min-height: 100vh;
+          background-color: rgb(255, 243, 253); /* Fondo claro */
+          margin: 0;
+        }
+
+        .mainContainer {
+          max-width: 500px;
+          width: 100%;
+          background-color: beige;
+          padding: 20px;
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+          border-radius: 12px;
+        }
+
+        .card-title {
+          font-size: 2rem;
+          color: #2d3748;
+          text-align: center;
+        }
+
+        .form-label, .form-control, .form-select {
+          margin-bottom: 15px;
+        }
+
+        .btn {
+          font-size: 1rem;
+          padding: 10px 20px;
+          border-radius: 8px;
+          transition: background-color 0.3s;
+        }
+
+        .btn-primary:hover {
+          background-color: rgb(87, 39, 151);
+        }
+
+        .table th, .table td {
+          padding: 12px;
+          text-align: left;
+          border-bottom: 1px solid #ddd;
+        }
+
+        .fw-bold {
+          font-weight: 600;
+        }
+
+        .text-end {
+          text-align: right;
+        }
+
+        .d-grid {
+          display: grid;
+        }
+              @media (max-width: 768px) {
+          .mainContainer {
+            max-width: 90%; /* Reducir ancho en dispositivos más pequeños */
+            padding: 15px;
+          }
+
+          .card-title {
+            font-size: 1.5rem; /* Reducir tamaño del título */
+          }
+
+          .form-label, .form-control, .form-select {
+            font-size: 0.9rem; /* Ajustar tamaños de texto */
+          }
+
+          .btn {
+            font-size: 0.9rem;
+            padding: 8px 15px; /* Reducir tamaño de botones */
+          }
+
+          .table th, .table td {
+            font-size: 0.8rem; /* Ajustar fuente en tablas */
+            padding: 8px; /* Reducir espacio entre celdas */
+          }
+        }
+
+        @media (max-width: 480px) {
+          .card-title {
+            font-size: 1.25rem;
+          }
+
+          .btn {
+            padding: 6px 10px; /* Botones aún más compactos */
+          }
+
+          .form-label, .form-control, .form-select {
+            font-size: 0.8rem; /* Ajuste más agresivo del texto */
+          }
+        }
   </style>
 </head>
 <body>
@@ -116,11 +162,11 @@ class FacturaContainer extends HTMLElement {
     <div class="d-grid">
       <button id="pagar" class="btn btn-success btn-lg">Pagar</button>
     </div>
-  </div>  
+  </div>
 
     `;
 
-    this.productos = []; 
+    this.productos = [];
     this.productosOpciones = [
       { id: 1, nombre: 'Pizza', precio: 10.00 },
       { id: 2, nombre: 'Hamburguesa', precio: 5.00 },
@@ -206,12 +252,12 @@ class FacturaContainer extends HTMLElement {
 
   pagar() {
     const total = parseFloat(this.shadowRoot.querySelector('#total').textContent);
-  
+
     if (total > 0) {
-     
+
       alert(`¡Gracias por tu compra! El total de tu factura es: $${total.toFixed(2)}`);
-  
-     
+
+
       this.productos = [];
       this.shadowRoot.querySelector('#producto-select').value = '';
       this.shadowRoot.querySelector('#cantidad').value = '';
@@ -223,7 +269,7 @@ class FacturaContainer extends HTMLElement {
       alert('No hay productos en la factura para pagar.');
     }
   }
-  
+
 }
 
 customElements.define('factura-container', FacturaContainer);
