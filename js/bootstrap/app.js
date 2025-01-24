@@ -4,22 +4,23 @@ class FacturaContainer extends HTMLElement {
     this.attachShadow({ mode: 'open' });
     this.shadowRoot.innerHTML = /*html*/`
       <style>
-  body {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      margin: 0;
-      background-color: rgb(247, 23, 23); /* Fondo rojo */
-    }
-    .mainContainer {
-      max-width: 500px;
-      width: 100%;
-      background-color: beige;
-      padding: 20px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      border-radius: 12px;
-    }
+:host {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: rgb(255, 255, 255); /* Fondo rojo */
+  margin: 0;
+}
+.mainContainer {
+  max-width: 500px;
+  width: 100%;
+  background-color: beige;
+  padding: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+}
+
     .card-title {
       font-size: 2rem;
       color: #2d3748;
@@ -131,7 +132,7 @@ class FacturaContainer extends HTMLElement {
     this.idFactura = this.generarIdFactura(); 
   }
 
-  connectedCallback() {
+ connectedCallback() {
     this.shadowRoot.querySelector('#id-factura').value = this.idFactura; 
     this.shadowRoot.querySelector('#agregar-producto').addEventListener('click', this.agregarProducto);
     this.shadowRoot.querySelector('#pagar').addEventListener('click', this.pagar);
