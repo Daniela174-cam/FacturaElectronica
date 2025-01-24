@@ -4,214 +4,119 @@ class FacturaContainer extends HTMLElement {
     this.attachShadow({ mode: 'open' });
     this.shadowRoot.innerHTML = /*html*/`
       <style>
-        body {
-          font-family: 'Arial', sans-serif;
-        }
-          .bg-light{
-           background-color:rgb(247, 23, 23);
-        }
-
-        .card {
-          background-color:rgb(255, 251, 251);
-          border-radius: 12px;
-          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-          padding: 20px;
-        }
-
-        .card-title {
-          font-size: 2rem;
-          color: #2d3748;
-        }
-
-        .form-label {
-          font-size: 0.9rem;
-          color: #333;
-        }
-
-        .form-control {
-          border-radius: 8px;
-          border: 1px solid #ddd;
-          padding: 10px;
-          font-size: 1rem;
-        }
-
-        .form-select {
-          border-radius: 8px;
-          border: 1px solid #ddd;
-          font-size: 1rem;
-          padding: 10px;
-        }
-
-        .btn {
-          font-size: 1rem;
-          padding: 10px 20px;
-          border-radius: 8px;
-          transition: background-color 0.3s;
-        }
-
-        .btn-primary {
-          background-color:rgb(0, 19, 102);
-          color: #fff;
-        }
-
-        .btn-primary:hover {
-          background-color:rgb(87, 39, 151);
-        }
-
-        .btn-success {
-          background-color:rgb(0, 19, 102);
-          color: #fff;
-        }
-
-        .btn-success:hover {
-          background-color:rgb(156, 22, 218);
-        }
-
-        .btn-danger {
-          background-color:rgb(128, 105, 102);
-          color: #fff;
-        }
-
-        .btn-danger:hover {
-          background-color:rgb(233, 57, 38);
-        }
-
-        .table {
-          margin-top: 20px;
-          width: 100%;
-          border-collapse: collapse;
-        }
-
-        .table th,
-        .table td {
-          padding: 12px;
-          text-align: left;
-          border-bottom: 1px solid #ddd;
-        }
-
-        .table th {
-          background-color:rgb(0, 19, 102);
-          color: #fff;
-        }
-
-        .table-striped tbody tr:nth-of-type(odd) {
-          background-color: #f9f9f9;
-        }
-
-        .table-striped tbody tr:hover {
-          background-color: #f1f1f1;
-        }
-
-        .fw-bold {
-          font-weight: 600;
-        }
-
-        .text-end {
-          text-align: right;
-        }
-
-        .d-grid {
-          display: grid;
-        }
-
-        .eliminar {
-          cursor: pointer;
-        }
-
-        .eliminar:hover {
-          background-color:rgb(244, 54, 111);
-          border-color:rgb(0, 0, 0);
-        }
-
-        h4 {
-          color: #2d3748;
-          font-size: 1.25rem;
-          margin-bottom: 10px;
-        }
-        .container-fluid {
-          padding: 30px;
-        }
-      </style>
-      <div class="card shadow">
-        <div class="card-body">
-          <h1 class="card-title text-center">Factura</h1>
-          <div class="mb-4">
-            <h4>Información del Cliente</h4>
-            <div class="row g-3">
-              <div class="col-md-6">
-                <label for="id-factura" class="form-label">ID Factura</label>
-                <input type="text" id="id-factura" class="form-control" readonly>
-              </div> <br>
-              <div class="col-md-6">
-                <label for="nombre" class="form-label">Nombres</label>
-                <input type="text" id="nombre" class="form-control" placeholder="Nombres">
-              </div><br>
-              <div class="col-md-6">
-                <label for="apellido" class="form-label">Apellidos</label>
-                <input type="text" id="apellido" class="form-control" placeholder="Apellidos">
-              </div><br>
-              <div class="col-md-6">
-                <label for="direccion" class="form-label">Dirección</label>
-                <input type="text" id="direccion" class="form-control" placeholder="Dirección">
-              </div><br>
-              <div class="col-md-12">
-                <label for="email" class="form-label">Email</label>
-                <input type="email" id="email" class="form-control" placeholder="Correo Electrónico">
-              </div><br>
-            </div>
-          </div>
-          <hr>
-          <div class="mb-4">
-            <h4>Productos</h4>
-            <div class="row g-3">
-              <div class="col-md-6"> 
-                <label for="producto-select" class="form-label">Seleccionar Producto</label>
-                <select id="producto-select" class="form-select">
-                  <option value="" disabled selected>Elige un producto</option>
-                  <option value="1">Pizza - $10.00</option>
-                  <option value="2">Hamburguesa - $5.00</option>
-                  <option value="3">Ensalada - $7.00</option>
-                  <option value="4">Tacos - $4.50</option>
-                </select>
-              </div><br>
-              <div class="col-md-3">
-                <label for="cantidad" class="form-label">Cantidad</label>
-                <input type="number" id="cantidad" class="form-control" placeholder="Cantidad">
-              </div><br>
-            </div>
-            <div class="d-grid mt-3">
-              <button id="agregar-producto" class="btn btn-primary">Agregar Producto</button>
-            </div><br>
-          </div>
-          <hr>
-          <div class="mb-4">
-            <h4>Resumen de Compra</h4>
-            <div class="table-responsive">
-              <table class="table table-striped">
-                <thead>
-                  <tr>
-                    <th>Código</th>
-                    <th>Nombre</th>
-                    <th>Valor Unitario</th>
-                    <th>Cantidad</th>
-                    <th>Subtotal</th>
-                    <th>Acciones</th>
-                  </tr>
-                </thead>
-                <tbody id="productos-lista"></tbody>
-              </table>
-            </div>
-          </div><br>
-          <div class="mb-4 text-end">
-            <div class="fw-bold">Subtotal: $<span id="subtotal">0.00</span></div>
-            <div class="fw-bold">IVA (19%): $<span id="iva">0.00</span></div>
-            <div class="fw-bold">Total: $<span id="total">0.00</span></div>
-          </div><br>
-          <div class="d-grid">
-            <button id="pagar" class="btn btn-success btn-lg">Pagar</button>
-          </div>
-        </div>
+  body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      background-color: rgb(247, 23, 23); /* Fondo rojo */
+    }
+    .mainContainer {
+      max-width: 500px;
+      width: 100%;
+      background-color: beige;
+      padding: 20px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      border-radius: 12px;
+    }
+    .card-title {
+      font-size: 2rem;
+      color: #2d3748;
+      text-align: center;
+    }
+    .form-label, .form-control, .form-select {
+      margin-bottom: 15px;
+    }
+    .btn {
+      font-size: 1rem;
+      padding: 10px 20px;
+      border-radius: 8px;
+      transition: background-color 0.3s;
+    }
+    .btn-primary:hover {
+      background-color: rgb(87, 39, 151);
+    }
+    .table th, .table td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+    .fw-bold {
+      font-weight: 600;
+    }
+    .text-end {
+      text-align: right;
+    }
+    .d-grid {
+      display: grid;
+    }
+  </style>
+</head>
+<body>
+  <div class="mainContainer">
+    <h1 class="card-title">Factura</h1>
+    <div class="mb-4">
+      <h4>Información del Cliente</h4>
+      <div class="row g-3">
+        <label for="id-factura" class="form-label">ID Factura</label>
+        <input type="text" id="id-factura" class="form-control" readonly>
+        <label for="nombre" class="form-label">Nombres</label>
+        <input type="text" id="nombre" class="form-control" placeholder="Nombres">
+        <label for="apellido" class="form-label">Apellidos</label>
+        <input type="text" id="apellido" class="form-control" placeholder="Apellidos">
+        <label for="direccion" class="form-label">Dirección</label>
+        <input type="text" id="direccion" class="form-control" placeholder="Dirección">
+        <label for="email" class="form-label">Email</label>
+        <input type="email" id="email" class="form-control" placeholder="Correo Electrónico">
       </div>
+    </div>
+    <hr>
+    <div class="mb-4">
+      <h4>Productos</h4>
+      <label for="producto-select" class="form-label">Seleccionar Producto</label>
+      <select id="producto-select" class="form-select">
+        <option value="" disabled selected>Elige un producto</option>
+        <option value="1">Pizza - $10.00</option>
+        <option value="2">Hamburguesa - $5.00</option>
+        <option value="3">Ensalada - $7.00</option>
+        <option value="4">Tacos - $4.50</option>
+      </select>
+      <label for="cantidad" class="form-label">Cantidad</label>
+      <input type="number" id="cantidad" class="form-control" placeholder="Cantidad">
+      <div class="d-grid mt-3">
+        <button id="agregar-producto" class="btn btn-primary">Agregar Producto</button>
+      </div>
+    </div>
+    <hr>
+    <div class="mb-4">
+      <h4>Resumen de Compra</h4>
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Código</th>
+              <th>Nombre</th>
+              <th>Valor Unitario</th>
+              <th>Cantidad</th>
+              <th>Subtotal</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="productos-lista"></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="mb-4 text-end">
+      <div class="fw-bold">Subtotal: $<span id="subtotal">0.00</span></div>
+      <div class="fw-bold">IVA (19%): $<span id="iva">0.00</span></div>
+      <div class="fw-bold">Total: $<span id="total">0.00</span></div>
+    </div>
+    <div class="d-grid">
+      <button id="pagar" class="btn btn-success btn-lg">Pagar</button>
+    </div>
+  </div>  
+
     `;
 
     this.productos = [];
@@ -223,17 +128,17 @@ class FacturaContainer extends HTMLElement {
     ];
     this.agregarProducto = this.agregarProducto.bind(this);
     this.pagar = this.pagar.bind(this);
-    this.idFactura = this.generarIdFactura(); // Generamos el ID de la factura
+    this.idFactura = this.generarIdFactura(); 
   }
 
   connectedCallback() {
-    this.shadowRoot.querySelector('#id-factura').value = this.idFactura; // Mostramos el ID de la factura
+    this.shadowRoot.querySelector('#id-factura').value = this.idFactura; 
     this.shadowRoot.querySelector('#agregar-producto').addEventListener('click', this.agregarProducto);
     this.shadowRoot.querySelector('#pagar').addEventListener('click', this.pagar);
   }
 
   generarIdFactura() {
-    return 'FAC-' + Math.floor(Math.random() * 1000000); // Genera un ID de factura aleatorio
+    return 'FAC-' + Math.floor(Math.random() * 1000000);
   }
 
   agregarProducto() {
@@ -262,7 +167,7 @@ class FacturaContainer extends HTMLElement {
   }
 
   generarIdProducto() {
-    return Math.floor(Math.random() * 1000000); // Genera un número aleatorio para el ID del producto
+    return Math.floor(Math.random() * 1000000); 
   }
 
   actualizarTabla() {
